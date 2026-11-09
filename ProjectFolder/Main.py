@@ -15,15 +15,43 @@ def view_materials():
         print(f"  - Min Margin: {details['min_margin'] * 100}%")
         print("-" * 30)
 
+# Adds a new material or updates an existing one with basic input validation
+def add_or_update_material():
+    print("\n--- Add or Update Material ---")
+    item_name = input("Enter material name (e.g., 3_inch_pipe): ").strip().lower()
+    
+    # Input validation for cost using standard loops and string checks
+    cost_input = input("Enter cost per foot ($): ")
+    while not cost_input.replace('.', '', 1).isdigit():
+        print("Invalid input. Please enter numbers only.")
+        cost_input = input("Enter cost per foot ($): ")
+    cost = float(cost_input)
+            
+    # Input validation for stock quantity using .isdigit()
+    stock_input = input("Enter stock quantity in feet: ")
+    while not stock_input.isdigit():
+        print("Invalid input. Please enter whole numbers only.")
+        stock_input = input("Enter stock quantity in feet: ")
+    stock = int(stock_input)
+            
+    # If the item already exists, update it; otherwise, add it as new
+    if item_name in materials:
+        materials[item_name]["cost_per_ft"] = cost
+        materials[item_name]["stock_ft"] += stock
+        print(f"Success! Updated existing item '{item_name}' with new cost and added {stock} ft to stock.")
+    else:
+        materials[item_name] = {"cost_per_ft": cost, "stock_ft": stock, "min_margin": 0.35}
+        print(f"Success! Added new item '{item_name}' to the catalog.")
+
 # Displays the main menu options
 def show_menu():
     print("\n--- Ironclad Custom Welding Estimator ---")
     print("1. View material catalog")
-    print("2. Add or update material costs (Coming soon)")
-    print("3. Generate new job quote (Coming soon)")
-    print("4. Show quote history & margin alerts (Coming soon)")
-    print("5. Run steel price simulation (Coming soon)")
-    print("6. Sales & profitability report (Coming soon)")
+    print("2. Add or update material costs")
+    print("3. Generate new job quote")
+    print("4. Show quote history & margin alerts")
+    print("5. Run steel price simulation")
+    print("6. Sales & profitability report")
     print("7. Save and exit")
 
 # Runs the main program loop
@@ -35,7 +63,7 @@ def main():
         if choice == "1":
             view_materials()
         elif choice == "2":
-            print("Coming soon")
+            add_or_update_material()
         elif choice == "3":
             print("Coming soon")
         elif choice == "4":
